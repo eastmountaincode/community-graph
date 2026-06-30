@@ -274,7 +274,7 @@ This prototype currently focuses on the graph interaction. It does not yet have:
 PlayHTML is currently the collaboration layer for the prototype. Later, D1 can
 be added as a durable database layer for projects and saved graph state.
 
-## One-Sentence Class Explanation
+## One-Sentence Explanation
 
 This prototype uses React Flow for the zoomable draggable graph, while PlayHTML
 provides a shared room and shared data object; adding, editing, deleting, and
