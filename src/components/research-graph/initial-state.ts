@@ -1,0 +1,52 @@
+import type { ResearchState } from "@/lib/types";
+
+export const initialResearchState: ResearchState = {
+  project: {
+    id: "bandwidth-vs-irl",
+    title: "Bandwidth vs IRL",
+    slug: "bandwidth-vs-irl",
+    xLabel: "Bandwidth of expression",
+    yLabel: "Proximity to IRL",
+    graphMode: "origin",
+    createdAt: "2026-06-29T00:00:00.000Z",
+    updatedAt: "2026-06-29T00:00:00.000Z",
+  },
+  blocks: [
+    {
+      id: "block-shared-canvas",
+      projectId: "bandwidth-vs-irl",
+      kind: "link",
+      title: "Shared canvas",
+      body: "A collaborative surface as evidence and discussion space.",
+      url: "https://www.are.na/",
+      x: 19.6,
+      y: 72.9,
+      createdAt: "2026-06-29T00:00:00.000Z",
+      updatedAt: "2026-06-29T00:00:00.000Z",
+    },
+    {
+      id: "block-longform-writing",
+      projectId: "bandwidth-vs-irl",
+      kind: "text",
+      title: "Longform writing",
+      body: "High bandwidth, usually less physically present.",
+      url: "",
+      x: 72.6,
+      y: 66.4,
+      createdAt: "2026-06-29T00:00:00.000Z",
+      updatedAt: "2026-06-29T00:00:00.000Z",
+    },
+    {
+      id: "block-group-walk",
+      projectId: "bandwidth-vs-irl",
+      kind: "text",
+      title: "Group walk",
+      body: "Close to IRL, lower artifact density.",
+      url: "",
+      x: 37.9,
+      y: 32.9,
+      createdAt: "2026-06-29T00:00:00.000Z",
+      updatedAt: "2026-06-29T00:00:00.000Z",
+    },
+  ],
+};
