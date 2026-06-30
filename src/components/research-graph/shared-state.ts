@@ -23,6 +23,43 @@ export function getSharedBlocks(data: SharedGraphData): ResearchBlock[] {
     .filter((block): block is ResearchBlock => Boolean(block));
 }
 
+export function addSharedBlock(
+  data: SharedGraphData,
+  block: ResearchBlock,
+): void {
+  if (!data.blockIds.includes(block.id)) {
+    data.blockIds.push(block.id);
+  }
+
+  data.blocksById[block.id] = block;
+}
+
+export function updateSharedBlockDetails(
+  data: SharedGraphData,
+  blockId: string,
+  patch: Partial<Pick<ResearchBlock, "body" | "kind" | "title" | "url">>,
+): void {
+  const block = data.blocksById[blockId];
+
+  if (!block) {
+    return;
+  }
+
+  Object.assign(block, patch, { updatedAt: new Date().toISOString() });
+}
+
+export function deleteSharedBlock(
+  data: SharedGraphData,
+  blockId: string,
+): void {
+  data.blockIds.splice(
+    0,
+    data.blockIds.length,
+    ...data.blockIds.filter((id) => id !== blockId),
+  );
+  delete data.blocksById[blockId];
+}
+
 export function updateLocalBlockPosition(
   blocks: ResearchBlock[],
   blockId: string,

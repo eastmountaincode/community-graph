@@ -7,6 +7,7 @@ import { PLAYHTML_GRAPH } from "@/components/research-graph/config";
 import { initialResearchState } from "@/components/research-graph/initial-state";
 import { ResearchGraph } from "@/components/research-graph/ResearchGraph";
 import { makeSharedGraphData } from "@/components/research-graph/shared-state";
+import { getLocalPlayhtmlCursorIdentity } from "@/lib/playhtml-cursor-identity";
 
 export function ResearchWorkspace() {
   const pathname = usePathname();
@@ -17,7 +18,10 @@ export function ResearchWorkspace() {
     () => ({
       cursors: {
         enabled: true,
+        playerIdentity: getLocalPlayhtmlCursorIdentity(),
         room: "page" as const,
+        shouldRenderCursor: (presence: { page?: string }) =>
+          presence.page === window.location.pathname,
       },
       room: playhtmlRoom,
     }),

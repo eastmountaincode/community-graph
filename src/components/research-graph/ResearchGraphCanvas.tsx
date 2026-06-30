@@ -13,6 +13,7 @@ import {
   useReactFlow,
   useViewport,
 } from "@xyflow/react";
+import { useCursorZone } from "@playhtml/react";
 import {
   type RefObject,
   useCallback,
@@ -58,19 +59,24 @@ const nodeTypes = {
 export function ResearchGraphCanvas({
   blocks,
   graphMode,
+  onSelectBlock,
   projectId,
+  selectedBlockId,
   setGraphData,
   xLabel,
   yLabel,
 }: {
   blocks: ResearchBlock[];
   graphMode: GraphMode;
+  onSelectBlock: (blockId: string | null) => void;
   projectId: string;
+  selectedBlockId: string | null;
   setGraphData: SharedGraphDataSetter;
   xLabel: string;
   yLabel: string;
 }) {
   const stageRef = useRef<HTMLDivElement>(null);
+  useCursorZone(stageRef);
   const pendingDragFrameRef = useRef(0);
   const pendingDragNodeRef = useRef<Node<ResearchNodeData, "researchBlock"> | null>(
     null,
@@ -85,7 +91,15 @@ export function ResearchGraphCanvas({
     [],
   );
   const [nodes, setNodes] = useState<ResearchFlowNode[]>(() =>
-    makeFlowNodes(blocks, bounds, blockExtent, graphMode, xLabel, yLabel),
+    makeFlowNodes(
+      blocks,
+      bounds,
+      blockExtent,
+      graphMode,
+      selectedBlockId,
+      xLabel,
+      yLabel,
+    ),
   );
 
   useEffect(() => {
@@ -97,11 +111,12 @@ export function ResearchGraphCanvas({
         currentNodes,
         draggingNodeId: draggingNodeIdRef.current,
         graphMode,
+        selectedBlockId,
         xLabel,
         yLabel,
       }),
     );
-  }, [blockExtent, blocks, bounds, graphMode, xLabel, yLabel]);
+  }, [blockExtent, blocks, bounds, graphMode, selectedBlockId, xLabel, yLabel]);
 
   const handleNodesChange = useCallback(
     (changes: NodeChange<ResearchFlowNode>[]) => {
@@ -170,6 +185,13 @@ export function ResearchGraphCanvas({
     [writeNodePositionToShared],
   );
 
+  const handleNodeClick = useCallback(
+    (_event: React.MouseEvent, node: ResearchFlowNode) => {
+      onSelectBlock(isResearchBlockNode(node) ? node.id : null);
+    },
+    [onSelectBlock],
+  );
+
   useEffect(() => {
     return () => {
       if (pendingDragFrameRef.current) {
@@ -200,9 +222,11 @@ export function ResearchGraphCanvas({
         nodesConnectable={false}
         nodesDraggable
         nodesFocusable={false}
+        onNodeClick={handleNodeClick}
         onNodeDrag={handleNodeDrag}
         onNodeDragStop={handleNodeDragStop}
         onNodesChange={handleNodesChange}
+        onPaneClick={() => onSelectBlock(null)}
         panOnDrag
         proOptions={{ hideAttribution: true }}
         selectNodesOnDrag={false}
@@ -226,6 +250,7 @@ function makeFlowNodes(
   bounds: ReturnType<typeof getBounds>,
   blockExtent: CoordinateExtent,
   graphMode: GraphMode,
+  selectedBlockId: string | null,
   xLabel: string,
   yLabel: string,
 ): ResearchFlowNode[] {
@@ -234,6 +259,7 @@ function makeFlowNodes(
     extent: blockExtent,
     id: block.id,
     position: blockToNodePosition(block, bounds),
+    selected: block.id === selectedBlockId,
     type: "researchBlock",
     zIndex: 10,
   }));
@@ -281,6 +307,7 @@ function reconcileFlowNodes({
   currentNodes,
   draggingNodeId,
   graphMode,
+  selectedBlockId,
   xLabel,
   yLabel,
 }: {
@@ -290,6 +317,7 @@ function reconcileFlowNodes({
   currentNodes: ResearchFlowNode[];
   draggingNodeId: string | null;
   graphMode: GraphMode;
+  selectedBlockId: string | null;
   xLabel: string;
   yLabel: string;
 }): ResearchFlowNode[] {
@@ -298,6 +326,7 @@ function reconcileFlowNodes({
     bounds,
     blockExtent,
     graphMode,
+    selectedBlockId,
     xLabel,
     yLabel,
   );
@@ -317,6 +346,7 @@ function reconcileFlowNodes({
         return {
           ...currentNode,
           extent: nextNode.extent,
+          selected: nextNode.selected,
           zIndex: nextNode.zIndex,
         };
       }
@@ -326,6 +356,7 @@ function reconcileFlowNodes({
         data: nextNode.data,
         extent: nextNode.extent,
         position: nextNode.position,
+        selected: nextNode.selected,
         zIndex: nextNode.zIndex,
       };
     }
