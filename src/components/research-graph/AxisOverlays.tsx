@@ -13,7 +13,7 @@ export function AxisNodeContent({
   xLabel,
   yLabel,
 }: AxisNodeData) {
-  const labelGap = 70;
+  const labelGap = 30;
   const labelFontSize = 64;
   const yLabelCenterOffset = labelGap + labelFontSize / 2;
   const labelClassName =

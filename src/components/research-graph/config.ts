@@ -14,8 +14,8 @@ export const WORLD = {
 } as const;
 
 export const BLOCK_CARD = {
-  width: 190,
-  height: 104,
+  width: 420,
+  height: 240,
 } as const;
 
 export const PLAYHTML_GRAPH = {

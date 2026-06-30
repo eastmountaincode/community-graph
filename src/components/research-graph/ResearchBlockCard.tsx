@@ -10,7 +10,7 @@ export function ResearchBlockCard({
 }) {
   return (
     <div
-      className="grid cursor-grab touch-none gap-[7px] overflow-hidden rounded-none bg-white p-2.5 text-black shadow-none outline-0 select-none active:cursor-grabbing [-webkit-tap-highlight-color:transparent]"
+      className="grid cursor-grab touch-none gap-4 overflow-hidden rounded-none bg-white p-5 text-black shadow-none outline-0 select-none active:cursor-grabbing [-webkit-tap-highlight-color:transparent]"
       data-block-id={block.id}
       style={{
         boxShadow: `inset 0 0 0 ${outlineWidth}px #000`,
@@ -18,15 +18,15 @@ export function ResearchBlockCard({
         width: BLOCK_CARD.width,
       }}
     >
-      <strong className="text-[18px] leading-[1.05] font-bold tracking-normal text-black">
+      <strong className="text-[40px] leading-[1.05] font-bold tracking-normal text-black">
         {block.title}
       </strong>
       {block.kind === "link" ? (
-        <p className="m-0 text-[13px] leading-tight tracking-normal text-black underline">
+        <p className="m-0 text-[28px] leading-tight tracking-normal text-black underline">
           {linkHost(block.url)}
         </p>
       ) : (
-        <p className="m-0 text-[13px] leading-tight tracking-normal text-black">
+        <p className="m-0 text-[28px] leading-tight tracking-normal text-black">
           {block.body}
         </p>
       )}

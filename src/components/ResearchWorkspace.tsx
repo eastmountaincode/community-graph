@@ -3,6 +3,7 @@
 import { PlayProvider } from "@playhtml/react";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import { CommunityGraphHeader } from "@/components/CommunityGraphHeader";
 import { PLAYHTML_GRAPH } from "@/components/research-graph/config";
 import { initialResearchState } from "@/components/research-graph/initial-state";
 import { ResearchGraph } from "@/components/research-graph/ResearchGraph";
@@ -30,7 +31,9 @@ export function ResearchWorkspace() {
 
   return (
     <PlayProvider initOptions={playhtmlOptions} pathname={pathname}>
-      <main className="grid h-[100svh] grid-rows-[auto_minmax(0,1fr)] overflow-hidden bg-white text-black">
+      <main className="grid h-[100svh] grid-rows-[auto_auto_minmax(0,1fr)] overflow-hidden bg-white text-black">
+        <CommunityGraphHeader />
+
         <header className="min-w-0 border-b border-black">
           <h1 className="m-0 text-2xl leading-none font-bold tracking-normal text-black p-2">
             {project.title}
